@@ -1,0 +1,7 @@
+<phpunit bootstrap="test/bootstrap.php" colors="true">
+    <testsuites>
+        <testsuite name="MySQL slow query log parser test suite">
+            <directory>test</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
