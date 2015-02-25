@@ -24,21 +24,21 @@ class LogEntryTest extends \PHPUnit_Framework_TestCase
     {
         $entry = new LogEntry($this->sampleEntry);
 
-        $this->assertEquals($entry->datetime, new \DateTime("@1395521698"));
+        $this->assertEquals($entry->getDatetime(), new \DateTime("@1395521698"));
 
-        $this->assertEquals($entry->user, "root");
+        $this->assertEquals($entry->getUser(), "root");
 
-        $this->assertEquals($entry->host, "localhost");
+        $this->assertEquals($entry->getHost(), "localhost");
 
-        $this->assertEquals($entry->queryTime, 0.000303);
+        $this->assertEquals($entry->getQueryTime(), 0.000303);
 
-        $this->assertEquals($entry->lockTime, 0.000090);
+        $this->assertEquals($entry->getLockTime(), 0.000090);
 
-        $this->assertEquals($entry->rowsSent, 15);
+        $this->assertEquals($entry->getRowsSent(), 15);
 
-        $this->assertEquals($entry->rowsExamined, 20);
+        $this->assertEquals($entry->getRowsExamined(), 20);
 
-        $this->assertEquals($entry->query, "SELECT * FROM users WHERE name = 'Jesse';");
+        $this->assertEquals($entry->getQuery(), "SELECT * FROM users WHERE name = 'Jesse';");
     }
 
 }

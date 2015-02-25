@@ -2,13 +2,13 @@
 /**
  * Created by PhpStorm.
  * User: garethellis
- * Date: 24/02/15
- * Time: 20:39
+ * Date: 25/02/15
+ * Time: 13:23
  */
 
 namespace Gumbercules\MysqlSlow\Exception;
 
 
-class InvalidFileException extends \Exception {
+class ParseErrorException extends \Exception {
 
 }

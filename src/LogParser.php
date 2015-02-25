@@ -21,6 +21,22 @@ class LogParser
         $this->contents = $logContents;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getContents()
+    {
+        return $this->contents;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getEntries()
+    {
+        return $this->entries;
+    }
+
     //parse the contents of the log
     public function parseEntries()
     {
@@ -32,7 +48,7 @@ class LogParser
             $this->addEntry($entry);
         }
 
-        return $this->entries;
+        return $this->getEntries();
     }
 
     /*
@@ -41,9 +57,11 @@ class LogParser
      */
     protected function splitLogIntoEntries()
     {
-        $entries = [];
-
-
+        $pattern = "/(# Time(?:.*\n){2,6}SET timestamp=[0-9|;]*.*\n.*\n)/";
+        $entries = preg_split($pattern, $this->contents, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        if (count($entries) == 1) {
+            throw new Exception\ParseErrorException("Failed to parse file");
+        }
         return $entries;
     }
 

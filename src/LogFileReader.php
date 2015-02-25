@@ -1,12 +1,12 @@
 <?php
 
-namespace Gumbercules;
-use Gumbercules\Exception\FileNotFoundException;
-use Gumbercules\Exception\InvalidFileException;
+namespace Gumbercules\MysqlSlow;
+use Gumbercules\MysqlSlow\Exception\FileNotFoundException;
+use Gumbercules\MysqlSlow\Exception\InvalidFileException;
 use Gumbercules\MysqlSlow\LogParser;
 
 
-class MysqlSlow
+class LogFileReader
 {
 
     //SplFileInfo object for the file
@@ -25,7 +25,7 @@ class MysqlSlow
     public function __construct($file)
     {
         if (!file_exists($file)) {
-            throw new \Gumbercules\Exception\FileNotFoundException("File not found");
+            throw new Exception\FileNotFoundException("File not found");
         }
         $this->loadFile($file);
     }
@@ -40,7 +40,7 @@ class MysqlSlow
     {
         $this->file = new \SplFileInfo($file);
         if ($this->file->getExtension() != "log") {
-            throw new \Gumbercules\Exception\InvalidFileException("Please provide a .log file");
+            throw new Exception\InvalidFileException("Please provide a .log file");
         }
     }
 
@@ -52,7 +52,7 @@ class MysqlSlow
     protected function readFile()
     {
         if (!$this->file->isReadable()) {
-            throw new \Gumbercules\Exception\FileNotReadableException("File is not readable");
+            throw new Exception\FileNotReadableException("File is not readable");
         }
         $this->fileContents = $this->file->openFile("r");
         return $this->fileContents->fread($this->file->getSize());

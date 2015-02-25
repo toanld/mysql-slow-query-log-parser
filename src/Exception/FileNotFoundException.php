@@ -6,7 +6,7 @@
  * Time: 20:39
  */
 
-namespace Gumbercules\Exception;
+namespace Gumbercules\MysqlSlow\Exception;
 
 
 class FileNotFoundException extends \Exception {

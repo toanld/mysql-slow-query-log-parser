@@ -6,7 +6,7 @@
  * Time: 20:47
  */
 
-namespace Gumbercules\Exception;
+namespace Gumbercules\MysqlSlow\Exception;
 
 
 class FileNotReadableException extends \Exception {
