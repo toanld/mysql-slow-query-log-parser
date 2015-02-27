@@ -57,12 +57,12 @@ class LogParser
      */
     protected function splitLogIntoEntries()
     {
-        $pattern = "/(# Time(?:.*\n){2,6}SET timestamp=[0-9|;]*.*\n.*\n)/";
+        $pattern = "/(# Time(?:.*\n){2,6}SET timestamp=[0-9|;]*.*\n(?:.*);\n)/";
         $entries = preg_split($pattern, $this->contents, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
         if (count($entries) == 1) {
             throw new Exception\ParseErrorException("Failed to parse file");
         }
-        return $entries;
+        return array_filter($entries);
     }
 
     //take individual entry raw data and create entry object to add to $this->entries property
