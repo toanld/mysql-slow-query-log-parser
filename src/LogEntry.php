@@ -182,6 +182,6 @@ class LogEntry
     {
         //query is on the last line of the entry
         $lines = array_filter(explode("\n", $this->data));
-        return array_pop($lines);
+        return trim(array_pop($lines));
     }
 }
