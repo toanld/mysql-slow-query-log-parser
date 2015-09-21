@@ -32,7 +32,7 @@ class LogEntry
     /*
      * @param string $data: raw data for one log entry
      */
-    public function __construct($data)
+    public function     __construct($data)
     {
         $this->data = $data;
         $this->parseEntry();
@@ -180,8 +180,19 @@ class LogEntry
 
     protected function parseQuery()
     {
-        //query is on the last line of the entry
+        //query is on the lines after the timestamp
+        //break up into lines and find the timestamp line
         $lines = array_filter(explode("\n", $this->data));
-        return trim(array_pop($lines));
+
+        foreach ($lines as $k => $line) {
+            if (!preg_match("/SET timestamp=([0-9]*);/", $line, $matches)) {
+                unset($lines[$k]);
+                continue;
+            }
+            unset($lines[$k]);
+            break;
+        }
+
+        return trim(implode("\n", $lines));
     }
 }
