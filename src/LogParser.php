@@ -16,9 +16,15 @@ class LogParser
     //this will be filled up with an array of objects for each entry
     protected $entries = [];
 
-    public function __construct($logContents)
+    protected $timezone;
+
+    public function __construct($logContents, \DateTimeZone $timezone = null)
     {
         $this->contents = $logContents;
+        if (!$timezone) {
+            $timezone = new \DateTimeZone(date_default_timezone_get());
+        }
+        $this->timezone = $timezone;
     }
 
     /**
@@ -69,7 +75,7 @@ class LogParser
     //take individual entry raw data and create entry object to add to $this->entries property
     protected function addEntry($entryData)
     {
-        $this->entries[] = new LogEntry($entryData);
+        $this->entries[] = new LogEntry($entryData, $this->timezone);
     }
 
 }

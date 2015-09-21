@@ -29,12 +29,15 @@ class LogEntry
 
     protected $query;
 
+    protected $timezone;
+
     /*
      * @param string $data: raw data for one log entry
      */
-    public function     __construct($data)
+    public function __construct($data, \DateTimeZone $timezone)
     {
         $this->data = $data;
+        $this->timezone = $timezone;
         $this->parseEntry();
     }
 
@@ -175,7 +178,7 @@ class LogEntry
         if (preg_match("/SET timestamp=([0-9]*);/", $this->data, $matches) === false) {
             throw new Exception\ParseErrorException("Couldn't parse timestamp");
         }
-        return new \DateTime("@".$matches[1]);
+        return new \DateTime("@".$matches[1], $this->timezone);
     }
 
     protected function parseQuery()

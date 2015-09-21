@@ -22,7 +22,7 @@ class LogEntryTest extends \PHPUnit_Framework_TestCase
 
     public function testValidData()
     {
-        $entry = new LogEntry($this->sampleEntry);
+        $entry = new LogEntry($this->sampleEntry, new \DateTimeZone(date_default_timezone_get()));
 
         $this->assertEquals($entry->getDatetime(), new \DateTime("@1395521698"));
 

@@ -62,9 +62,12 @@ class LogFileReader
      * parse the actual file, returning an array of LogEntry objects
      * @returns array of LogEntry objects
      */
-    public function parseFile()
+    public function parseFile(\DateTimeZone $timezone = null)
     {
-        $this->logParser = new \Gumbercules\MysqlSlow\LogParser($this->readFile());
+        if (!$timezone) {
+            $timezone = new \DateTimeZone(date_default_timezone_get());
+        }
+        $this->logParser = new \Gumbercules\MysqlSlow\LogParser($this->readFile(), $timezone);
         return $this->logParser->parseEntries();
     }
 
