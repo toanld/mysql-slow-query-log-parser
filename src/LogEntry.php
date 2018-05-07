@@ -47,10 +47,18 @@ class LogEntry
     /**
      * @return mixed
      */
-    public function getDatetime()
+    public function getDatetimeStemp()
     {
-        return $this->datetime;
+        return $this->datetimestemp;
     }
+    
+    /**
+     * @return mixed
+     */
+    public function getTime()
+    {
+        return $this->time;
+    }    
 
     /**
      * @return mixed
