@@ -63,7 +63,7 @@ class LogParser
      */
     protected function splitLogIntoEntries()
     {
-        $pattern = "/(# Time(?:.*\n))/";
+        $pattern = "/(# Time:)/";
         $entries = preg_split($pattern, $this->contents, -1);
 
         if (count($entries) == 1) {

@@ -13,7 +13,7 @@ class LogEntry
     protected $data;
 
     //query datetime as DateTime object
-    protected $datetime;
+    protected $datetimestemp;
 
     protected $user;
 
@@ -30,6 +30,9 @@ class LogEntry
     protected $query;
 
     protected $timezone;
+
+    protected $time;
+    protected $FileCall;
 
     /*
      * @param string $data: raw data for one log entry
@@ -118,10 +121,12 @@ class LogEntry
         $this->rowsExamined = $this->parseRowsExamined();
 
         //fourth line time stamp
-        $this->datetime = $this->parseTimestamp();
+        $this->datetimestemp = $this->parseTimestamp();
+        $this->time = $this->parseTime();
 
         //final line - the query itself
         $this->query = $this->parseQuery();
+        $this->FileCall = $this->parseFile();
     }
 
  
@@ -135,10 +140,10 @@ class LogEntry
 
     protected function parseHost()
     {
-        if (preg_match("/User@Host: .*@ (.*) /", $this->data, $matches) === false) {
+        if (preg_match("/User@Host: .*@([\s\[]+)([0-9\.]+)/", $this->data, $matches) === false) {
             throw new Exception\ParseErrorException("Couldn't parse host");
         }
-        return $matches[1];
+        return $matches[2];
     }
 
     protected function parseQueryTime()
@@ -178,7 +183,15 @@ class LogEntry
         if (preg_match("/SET timestamp=([0-9]*);/", $this->data, $matches) === false) {
             throw new Exception\ParseErrorException("Couldn't parse timestamp");
         }
-        return new \DateTime("@".$matches[1], $this->timezone);
+        return $matches[1];
+    }
+
+    protected function parseTime()
+    {
+        if (preg_match("/\s([0-9\:\s]*)/", $this->data, $matches)) {
+            return $matches[1];
+        }
+
     }
 
     protected function parseQuery()
@@ -195,7 +208,31 @@ class LogEntry
             unset($lines[$k]);
             break;
         }
+        $string = trim(implode("\n", $lines));
+        $string = preg_replace("/\/\*(.*)\*\//","",$string);
+        return $string;
+    }
 
-        return trim(implode("\n", $lines));
+    protected function parseFile()
+    {
+        //query is on the lines after the timestamp
+        //break up into lines and find the timestamp line
+        $lines = array_filter(explode("\n", $this->data));
+
+        foreach ($lines as $k => $line) {
+            if (!preg_match("/SET timestamp=([0-9]*);/", $line, $matches)) {
+                unset($lines[$k]);
+                continue;
+            }
+            unset($lines[$k]);
+            break;
+        }
+        $string = trim(implode("\n", $lines));
+        if(preg_match("/\/\*([0-9\.\s\-]+)(.*)\*\//",$string,$matches)){
+            $string = base64_decode(trim($matches[2]));
+            return str_replace(" - ",chr(13),$string);
+        }else{
+            return '';
+        }
     }
 }
