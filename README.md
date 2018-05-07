@@ -5,7 +5,7 @@ PHP lib for parsing a MySQL slow query log
 
 Install with composer:
 ```
-composer require gumbercules/mysqlslow
+composer require toanld/mysqlslow
 ```
 
 Include the namespace:
