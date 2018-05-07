@@ -115,6 +115,15 @@ class LogEntry
     {
         return $this->query;
     }
+    
+    
+    /**
+     * @return mixed
+     */
+    public function getFileCall()
+    {
+        return $this->FileCall;
+    }    
 
     /*
      * parse entry and set object properties
